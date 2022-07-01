@@ -13,14 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+Route::get('/', [App\Http\Controllers\UserController::class, 'loginForm']);
+Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout']);
+Route::get('/login', [App\Http\Controllers\UserController::class, 'loginForm'])->name('login');
+Route::post('/accountLogin', [App\Http\Controllers\UserController::class, 'accountLogin'])->name('accountLogin');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
