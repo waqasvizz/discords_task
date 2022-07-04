@@ -85,4 +85,60 @@ class UserController extends Controller
         }
         return redirect('/login');
     }
+    
+    public function exchangeratesapi()
+    {
+         return view('exchangeratesapi');
+    }
+
+    public function callExchangeRatesApi(Request $request){
+        $request_data = $request->all();
+
+        $rules = array(
+            'amount' => 'required',
+            'from' => 'required',
+            'to' => 'required',
+        );
+
+        $validator = \Validator::make($request_data, $rules);
+
+        if ($validator->fails()) {
+            return $this->sendError('Please fill all the required fields.', ["error"=>$validator->errors()->first()], 200);   
+        } else {
+
+
+                $CURLOPT_URL = 'https://api.apilayer.com/exchangerates_data/convert?to='.$request_data['to'].'&from='.$request_data['from'].'&amount='.$request_data['amount'].'';
+                if(isset($request_data['exchangeDate'])){
+                    $CURLOPT_URL .= '&date='.$request_data['exchangeDate'];
+                }
+                // echo '<pre>';print_r($CURLOPT_URL);'</pre>';
+                // echo '<pre>key:';print_r(config("app.EXCHANGE_RATE_API_KEY"));'</pre>';exit;
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                // CURLOPT_URL => "https://api.apilayer.com/exchangerates_data/convert?to=gbp&from=eur&amount=10",
+                CURLOPT_URL => $CURLOPT_URL,
+                CURLOPT_HTTPHEADER => array(
+                    "Content-Type: text/plain",
+                    "apikey: yI0Uqs59dKP3GSSBVjwTjgFGz3ZvtkxT"
+                ),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET"
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+                echo $response;
+                exit;
+
+            }
+    }
+    
 }

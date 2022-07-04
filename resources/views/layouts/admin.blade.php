@@ -230,7 +230,7 @@
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name font-weight-bolder">
-                                {{ Auth::user()->first_name.' '.  Auth::user()->last_name }}
+                                {{ Auth::user()->name }}
                             </span>
                             <span class="user-status">
                                 @php
@@ -282,46 +282,15 @@
         </div>
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
-            {{-- @if(Cache::has('user-is-online' . Auth::user()->id)) --}}
-                <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                    
-                    <li class="{{ Request::path() == 'dashboard' ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ url('dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                
+                <li class="{{ Request::path() == 'dashboard' ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ url('dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
 
-                    <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
-                    </li>
-                    
-                @if (Auth::user()->role_id == 1)
-                {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
-                    <ul class="menu-content">
-
-                        <li class="{{ Request::path() == 'user' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ url('user') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li class="{{ Request::path() == 'user/create' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ url('user/create') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add</span></a>
-                        </li>
-                    </ul>
-                </li> --}}
-                {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Contact form">Orders</span></a>
-                    <ul class="menu-content">
-                        <li class="{{ Request::path() == 'enquiry_form' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ url('enquiry_form') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li class="{{ Request::path() == 'enquiry_forms' ? 'active' : '' }}"><a class="d-flex align-items-center" target="_blank" href="{{ url('enquiry_forms') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add</span></a>
-                        </li>
-                    </ul>
+                <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
 
-                <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="list"></i><span class="menu-title text-truncate" data-i18n="Task">Tasks</span></a>
-                    <ul class="menu-content">
-
-                        <li class="{{ Request::path() == 'task' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ url('task') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li class="{{ Request::path() == 'task/create' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ url('task/create') }}"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add</span></a>
-                        </li>
-                    </ul>
-                </li> --}}
-                @endif
-
-                </ul>
-            {{-- @endif --}}
+                <li class="{{ Request::path() == 'exchange_rates_api' ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ url('exchange_rates_api') }}"><i data-feather="list"></i><span class="menu-title text-truncate" data-i18n="Exchange Rates Api">Exchange Rates Api</span></a>
+            </ul>
         </div>
     </div>
     <!-- END: Main Menu-->
@@ -349,32 +318,6 @@
     <!-- END: Footer-->
 
 
-    <!-- Delete modal -->
-    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true" style="display: none">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="smallBody">
-                    <form id="delForm" action="" method="post">
-                        <div class="modal-body">
-                            @csrf
-                            @method('DELETE')
-                            <h5 class="text-center">Are you sure you want to delete?</h5>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button id="form_delete_Btn" type="submit" class="btn btn-danger">Yes, Delete</button>
-                            <button id="ajax_delete_Btn" style="display: none;" type="button" class="btn btn-danger">Yes, Delete</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- BEGIN: Vendor JS-->
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
@@ -427,430 +370,54 @@
                 });
             }
         });
-        $(document).ready(function() {
-
-            // Add email Shortcodes
-            $("#emaiil_short_codes").change(function(e){
-                var email_message = $('#email_message').val();
-                $("#email_message").val(email_message+" "+e.target.value ).focus();
-            });
-               
-            var pathname = "{{Request::path()}}";
-
-            if (pathname == 'user') {
-                getAjaxData();
-            }
-
-            function getAjaxData(data) {
-                $('.loaderOverlay').fadeIn();
-                jQuery.ajax({
-                    url: "{{ URL::to('get_users') }}",
-                    data: $("#userFilterform").serializeArray(),
-                    method: 'POST',
-                    dataType: 'html',
-                    success: function(response) {
-                        $('.loaderOverlay').fadeOut();
-                        $("#all_users").html(response);
-                    }
-                });
-            }
-
-            $(document).on('change', '.userfltr', function(event) {
-                getAjaxData();
-            });
-
-            // Tasks List
-            var task_pathname = "{{Request::path()}}";
-
-            if (task_pathname == 'task' || task_pathname == 'assign_tasks') {
-                getTaskAjaxData();
-            }
-
-            function getTaskAjaxData(data) {
-                $('.loaderOverlay').fadeIn();
-                jQuery.ajax({
-                    url: "{{ URL::to('get_tasks') }}",
-                    data: $("#taskForm").serializeArray(),
-                    method: 'POST',
-                    dataType: 'html',
-                    success: function(response) {
-                        $('.loaderOverlay').fadeOut();
-                        $("#all_tasks").html(response);
-                    }
-                });
-            }
-
-            $(document).on('change', '.taskfltr', function(event) {
-                getTaskAjaxData();
-            });
 
 
 
-            $(document).on('click', '.users_links .pagination a', function(event) {
+        $(document).ready(function () {
+            $("#exchange_rate_api_form").submit(function (event) {
                 event.preventDefault();
-
-                var page = $(this).attr('href').split('page=')[1];
-                $('#userFltrPage').val(page);
-                getAjaxData();
-            });
-
-            //Tasks Links 
-            $(document).on('click', '.tasks_links .pagination a', function(event) {
-                event.preventDefault();
-
-                var task = $(this).attr('href').split('task=')[1];
-                $('#taskFltrPage').val(task);
-                getTaskAjaxData();
-            });
-
-            $("#theme_layout").click(function(event){
-                // $('.loaderOverlay').fadeIn();
-                $.ajax({
-                    method :"post",
-                    url: "{{ URL::to('theme_mode') }}",
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    },
-                    
-                    success: function(data) {
-                    },
-                    error: function(e) {
-                    }
-                });
-               
-            });
-            
-            $(document).on('click', '#delButton,#block_user', function(event) {
-                var btn_txt = $(this).text();
-                var form = $(this).closest("form");
-                var name = $(this).data("name");
-                event.preventDefault();
-                swal({
-                    title: `Are you sure you want to delete this record?`,
-                    icon: "warning",
-                    buttons: ["No", "Yes"],
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
-                    }
-                });
-
-                if (btn_txt == 'Block' || btn_txt == 'Unblock') {
-                    swal({
-                        title: `Are you sure you want to update this record?`,
-                        icon: "warning",
-                        buttons: ["No", "Yes"],
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            form.submit();
-                        }
-                    });
-                }
-
-            });
-            $(document).on('click', '#send_login_button', function(event) {
-                var btn_txt = $(this).text();
-                var form = $(this).closest("form");
-                var name = $(this).data("name");
-                event.preventDefault();
-                var link = $(this).attr('href');
-                // alert(link);
-                
-                swal({
-                    title: `Are you sure you want send login credentials`,
-                    icon: "warning",
-                    buttons: ["No", "Yes"],
-                    dangerMode: true,
-                })
-                .then(function(value) {
-                    if (value) {
-                        window.location.href = link ;
-                    }
-                });
-            
-            });
-
-            $(document).on('click', '.step', function(event) {
-                $('.alert-danger').hide();
-                $('.alert-success').hide();
-
-                var data_target = $(this).attr('data-target');
-                data_target = data_target.replace('#', '');
-                // alert(data_target);
-                follow_steps_active(data_target);
-            });
-
-            $(document).on('click', '.sbmt_form_data', function(event) {
-
-
-                var btn_txt = $(this).text();
+                $('.success_div').hide();
+                $('.error_div').hide();
+                $('.exchange_rate_res').html('');
+                var searchBtnVal = $('#searchBtn').text();
                 var btn_loader = ' <i class="fa fa-spinner fa-pulse"></i>';
-                $(this).html(btn_txt + btn_loader);
+                $('#searchBtn').html(btn_loader+" "+searchBtnVal);
 
-                // alert(btn_txt);
-
-                $('.alert-danger').hide();
-                $('.alert-success').hide();
-                $('.loading').show();
-                $('.status-div').hide();
-                var followStep = $(this).closest("form").find(".follow_steps").val();
-
-
-                if (followStep == 1) {
-                    var form = $('#step_one_form')[0];
-                } else if (followStep == 2) {
-                    var form = $('#step_two_form')[0];
-                } else if (followStep == 3) {
-                    var form = $('#step_three_form')[0];
-                } else if (followStep == 4) {
-                    var form = $('#step_four_form')[0];
-                } else if (followStep == 5) {
-                    var form = $('#step_five_form')[0];
-                } else if (followStep == 6) {
-
-                    if ($(this).prop("checked") == true) {
-                        $('#installation_checklist').val(1);
-                    } else if ($(this).prop("checked") == false) {
-                        $('#installation_checklist').val(2);
-                    }
-                    var form = $('#step_six_form')[0];
-                } else if (followStep == 7) {
-                    var form = $('#step_seven_form')[0];
-                }
-
+                var form = $('#exchange_rate_api_form')[0];
                 var formData = new FormData(form);
-                $(this).attr('disabled', 'disabled');
-
                 $.ajax({
                     type: "POST",
-                    url: "{{ URL::to('order') }}",
+                    url: "{{ URL::to('call_exchange_rates_api') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
                     cache: false,
                     context: this,
-                    // timeout: 600000,
                     dataType: 'json',
-
                     success: function(data) {
-
-                        $(this).html(btn_txt);
-                        $(this).removeAttr('disabled');
-
-                        if (data.success) {
-                            $('.loading').hide();
-                            $('.alert-success').show();
-                            $('.success-message').html(data.message);
-
-                            if (followStep == 2 && data.records.follow_steps == 3) {
-                                follow_steps_active('step-three');
+                        // console.log(data);
+                        $('#searchBtn').html(searchBtnVal);
+                        if(!data.success){
+                            $('.error_div').show();
+                            if(data.error){
+                                $('.error_message').html(data.error.message);
+                            }else{
+                                $('.error_message').html(data.message);
                             }
-                            if (followStep == 4 && data.records.follow_steps == 4) {
-
-                                $('#second_invoice_info').css('display', 'block');
-                            }
-                            if (followStep == 6 && data.records.follow_steps == 7) {
-                                // $('#step_seven_form').css('display', 'block');
-                                setTimeout(function() {
-                                    location.reload(true);
-                                }, 5000);
-                                // follow_steps_active('step-seven');
-                            }
-
-                        } else {
-                            $('.alert-danger').show();
-                            $('.loading').hide();
-                            $('.error-message').html(data.records.error);
+                        }else{
+                            $('.success_div').show();
+                            $('.success_message').html('Result found successfully!');
+                            $('.exchange_rate_res').html('<b>Date:</b> '+data.date+'<br><b>Result:</b> '+data.result);
                         }
-
-
-                        $('html,body').animate({
-                                scrollTop: $(".bs-stepper-header").offset().top
-                            },
-                            'smooth');
-
 
                     },
                     error: function(e) {
-
+                        // console.log(e);
                     }
                 });
             });
-
-            $(document).on('change', '.invoice_status_dd', function(event) {
-                $('.alert-danger').hide();
-                $('.alert-success').hide();
-                $('.status-div').hide();
-
-
-                var invoice_id = $(this).closest(".dropdown").find(".invoice_id").val();
-                var invoice_status = $(this).val();
-                // var loading_icon = ' <i class="fa fa-spinner fa-pulse"></i>';
-                $('.loaderOverlay').fadeIn();
-
-                $.ajax({
-                    type: "put",
-                    url: "{{ URL::to('invoice') }}/" + invoice_id,
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        update_id: invoice_id,
-                        invoice_status: invoice_status,
-                    },
-                    success: function(data) {
-                        $('.loaderOverlay').fadeOut();
-                        if (data.success) {
-                            $('.alert-success').show();
-                            $('.success-message').html(data.message);
-                            if (invoice_status == 2) {
-                                $('#customer_sale_info').show();
-                            } else {
-                                $('#customer_sale_info').hide();
-                            }
-                            if (invoice_status == 2 && data.records.invoice_step == 4) {
-                                $('#installation_checkbox').show();
-                            }
-                            else {
-                                $('#installation_checkbox').hide();
-                            }
-                            if (invoice_status == 2 && data.records.invoice_step == 2) {
-                                follow_steps_active('step-five');
-                            } else if (invoice_status == 2 && data.records.invoice_step == 3) {
-                                follow_steps_active('step-six');
-                            } else if (invoice_status == 2 && data.records.invoice_step == 2) {
-                                alert(data.records.invoice_step);
-
-                            }
-
-                        } else {
-                            $('.alert-danger').show();
-                            $('.error-message').html(data.records.error);
-                        }
-                        $('html,body').animate({
-                                scrollTop: $(".bs-stepper-header").offset().top
-                            },
-                            'smooth');
-
-                    },
-                    error: function(e) {}
-                });
-            });
-
-            $(document).on('click', '.send_email_confirmation', function(event) {
-                
-                $('.alert-danger').hide();
-                $('.alert-success').hide();
-                $('.status-div').hide();
-                $('.loaderOverlay').fadeIn();
-                var status =  $(this).val();
-
-                swal({
-                    title: `Are you sure you want send email`,
-                    icon: "warning",
-                    buttons: ["No", "Yes"],
-                    dangerMode: true,
-                })
-                .then(function(data) {
-                    if (data=== true) {
-                        $.ajax({
-                            type: "post",
-                            url: "{{ URL::to('client_confirmation') }}",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                enquery_id: "{{ isset($data['enquery_id'])? $data['enquery_id']: 0 }}",
-                                status: status
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                $('.loaderOverlay').fadeOut();
-                                $('.alert-success').show();
-                                $('.success-message').html(data.message);
-                                $('html,body').animate({
-                                        scrollTop: $(".bs-stepper-header").offset().top
-                                    },
-                                    'smooth');
-                            },
-                            error: function(e) {}
-                        });
-                    }
-                    else{
-                        $('.loaderOverlay').fadeOut();
-                    }
-                });
-
-            });
-
-            $(document).on('click', '.invoice_submit_data', function(event) {
-
-
-                var btn_txt = $(this).text();
-                var btn_loader = ' <i class="fa fa-spinner fa-pulse"></i>';
-                $(this).html(btn_txt + btn_loader);
-                $(this).attr('disabled', 'disabled');
-
-                $('.alert-danger').hide();
-                $('.alert-success').hide();
-                $('.status-div').hide();
-                var followStep = $(this).closest("form").find(".invoice_step").val();
-
-                if (followStep == 1) {
-                    var form = $('#invoice_one_form')[0];
-                } else if (followStep == 2) {
-                    var form = $('#invoice_two_form')[0];
-                } else if (followStep == 3) {
-                    var form = $('#invoice_three_form')[0];
-                } else if (followStep == 4) {
-                    var form = $('#invoice_four_form')[0];
-                }
-
-                var data = new FormData(form);
-
-                // console.log(data);
-                $.ajax({
-                    type: "POST",
-                    url: "{{ URL::to('invoice') }}",
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    context: this,
-                    // timeout: 600000,
-                    dataType: 'json',
-                    success: function(data) {
-                        $(this).html(btn_txt);
-                        $(this).removeAttr('disabled');
-                        if (data.success) {
-                            $('.invoice_id_' + data.records.invoice_step).val(data.records.id);
-                            $('.alert-success').show();
-                            $('.success-message').html(data.message);
-
-                        } else {
-                            $('.alert-danger').show();
-                            $('.error-message').html(data.records.error);
-                        }
-                        $('html,body').animate({
-                                scrollTop: $(".bs-stepper-header").offset().top
-                            },
-                            'smooth');
-
-                    },
-                    error: function(e) {}
-                });
-
-            });
-
-
         });
     </script>
-    
-
-    @yield('scripts')
-    @yield('notificationScript')
-    
 </body>
-<!-- END: Body-->
 
 </html>

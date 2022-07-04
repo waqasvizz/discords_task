@@ -29,4 +29,6 @@ Route::get('/login', [App\Http\Controllers\UserController::class, 'loginForm'])-
 Route::post('/accountLogin', [App\Http\Controllers\UserController::class, 'accountLogin'])->name('accountLogin');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/exchange_rates_api', [App\Http\Controllers\UserController::class, 'exchangeratesapi']);
+    Route::post('/call_exchange_rates_api', [App\Http\Controllers\UserController::class, 'callExchangeRatesApi'])->name('call_exchange_rates_api');
 });

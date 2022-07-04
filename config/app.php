@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'EXCHANGE_RATE_API_KEY' => env('EXCHANGE_RATE_API_KEY', ''),
 
     /*
     |--------------------------------------------------------------------------
